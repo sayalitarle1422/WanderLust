@@ -51,11 +51,24 @@ app.get("/listings/:id",async (req,res)=>{
 });
 
 //create route
-app.post("/listings",async (req,res)=>{
-    // let {title,description,image,price,country,location}=req.body;
-    const newListing=new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect("/listings");
+// app.post("/listings",async (req,res)=>{
+//     // let {title,description,image,price,country,location}=req.body;
+//     const newListing=new Listing(req.body.listing);
+//     await newListing.save();
+//     res.redirect("/listings");
+// });
+//create route
+app.post("/listings", async (req, res) => {
+    console.log("Form data received:", req.body); // Optional for debugging
+
+    try {
+        const newListing = new Listing(req.body.listing); // ✅ Use 'listing' key from form
+        await newListing.save(); // ✅ Save to MongoDB
+        res.redirect("/listings"); // ✅ Redirect to listings page
+    } catch (err) {
+        console.error("Error saving listing:", err); // ❌ Show error in console
+        res.status(400).send("Error occurred while creating the listing."); // Optional error response
+    }
 });
 
 //Edit Route
